@@ -1,3 +1,3 @@
 #!/bin/sh
 
-exec ./gradlew bootRun --args="$*"
+_JAVA_AWT_WM_NONREPARENTING=1 exec ./gradlew bootRun --args="$*"
