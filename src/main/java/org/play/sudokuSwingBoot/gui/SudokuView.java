@@ -4,6 +4,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.util.Arrays;
@@ -14,12 +15,11 @@ public class SudokuView extends JFrame {
 	private static int DEFAULT_WIDTH = 500;
 	private static int DEFAULT_HEIGHT = 400;
 
-	public SudokuView(
+	private void initSudokuView(
 		final BorderLayout borderLayout,
 		final SudokuTitle sudokuTitle,
-		ApplicationArguments args
+		final ApplicationArguments args
 	) {
-		
 		System.out.println("HELLO SUDOKU VIEW");
 		System.out.println(
 			Arrays.toString(args.getSourceArgs())
@@ -33,5 +33,19 @@ public class SudokuView extends JFrame {
 		this.add(sudokuTitle, BorderLayout.NORTH);
 				
 		this.setVisible(true);
+	}
+	
+	public SudokuView(
+		final BorderLayout borderLayout,
+		final SudokuTitle sudokuTitle,
+		final ApplicationArguments args
+	) {
+		SwingUtilities.invokeLater((Runnable) () -> {
+				initSudokuView(
+					borderLayout,
+					sudokuTitle,
+					args
+				);
+		});
 	}
 }
