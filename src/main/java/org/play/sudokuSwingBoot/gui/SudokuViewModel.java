@@ -19,6 +19,10 @@ public class SudokuViewModel {
 		numberData.observe(callback);
 	}
 
+	public void onCellClick(int cellId) {
+		System.out.println("Cell clicked " + cellId);
+	}
+	
 	public void onClickButton() {
 		if (clickWorker != null
 			&& !clickWorker.isDone() && !clickWorker.isCancelled()) {
