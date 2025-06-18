@@ -1,0 +1,49 @@
+* SUDOKU SWING BOOT
+
+** Scope
+
+An application for practice purposes combining java swing and spring boot.
+
+The theme of the application is a SUDOKU game
+
+** Running
+First you need to clone the repository on your computer.
+
+*** Unix systems
+To run on a unix like system there is a =run.sh= script
+You have to give this =run.sh= permission to execute
+
+#+begin_src bash
+chmod +x run.sh
+#+end_src
+
+and then you can call the script to run the program
+
+#+begin_src  bash
+./run.sh
+#+end_src
+
+you can also pass arguments to the script to pass it down
+to the application
+
+#+begin_src  bash
+./run.sh first_argument second_argument
+#+end_src
+
+*** Windows (untested)
+I don't have access to a windows enviroment to test this,
+but I did create a =run.bat= script with llm assistence that
+maybe can run the application.
+
+According to llm you can just call run.bat from the project directory
+and it should run
+
+#+begin_src  bash
+run.bat
+#+end_src
+
+It should also work with arguments
+
+#+begin_src  bash
+./run.sh first_argument second_argument
+#+end_src
