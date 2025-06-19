@@ -17,14 +17,13 @@ public class SudokuViewModel {
 	private LiveData<CellModel[]> cells;
 	private SudokuWorker<Integer> clickWorker = null;
 	private int currentActiveCellId = -1;
-	
-	
+
 	private boolean isValidCellId(int cellId) {
 		return cellId >=0 && cellId < NUM_CELLS;
 	}
 	
 	public SudokuViewModel() {
-		
+
 		CellModel[] cellsArr = new CellModel[NUM_CELLS];
 		for (int i = 0; i < NUM_CELLS; i++) {
 			cellsArr[i] = new CellModel(i);
@@ -58,6 +57,22 @@ public class SudokuViewModel {
 		} else {
 			currentActiveCellId = -1;
 		}
+	}
+
+	public void onControlClick(int buttonId) {
+
+		System.out.println("Button Clicked: " + buttonId);
+		if (!isValidCellId(currentActiveCellId)) {
+			System.out.println("No Cell Selected");
+			return;
+		}
+
+		CellModel cell = cells.getData()[currentActiveCellId];
+		if (buttonId == cell.getValue())
+			return;
+
+		cell.setValue(buttonId);
+		cells.setData(cells.getData(), true);
 	}
 	
 	public void onClickButton() {

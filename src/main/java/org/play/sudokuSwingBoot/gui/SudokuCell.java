@@ -29,7 +29,7 @@ public class SudokuCell extends JLabel implements MouseListener {
 
 	public void setId(int id) {
 		this.id = id;
-		this.setText("" + id);
+		this.setText("");
 	}
 
 	public void setOnClickCell(Consumer<Integer> onClickCell) {
@@ -64,13 +64,17 @@ public class SudokuCell extends JLabel implements MouseListener {
 	}
 
     public void onCellChanged(CellModel cellModel) {
-		System.out.println("SudokuCell.onCellChanged "
-			+ cellModel.getId() + ", " + cellModel.getText());
+		System.out.println("SudokuCell.onCellChanged\n\t"
+			+ cellModel.toString());
+
+		if (!cellModel.isEnabled())
+			return ;
+
 		if (cellModel.isActive()) {
 			this.setBorder(BORDER_DARK);
 		} else {
 			this.setBorder(BORDER_GRAY);
 		}
-        
+		this.setText(cellModel.getText());
     }
 }

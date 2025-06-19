@@ -4,35 +4,56 @@ public class CellModel {
 	private final int id;
 	private boolean isActive;
 	private boolean isEnabled;
-	String text;
+	private int value;
 
 	public CellModel(int id) {
 		this.id = id;
 		this.isActive = false;
 		this.isEnabled = true;
-		this.text = "" + id;
+		this.value = 0;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public boolean isActive() {
 		return isActive;
 	}
+
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
 	public boolean isEnabled() {
 		return isEnabled;
 	}
+
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
+
 	public String getText() {
-		return text;
+		if (this.value <= 0)
+			return "";
+		return "" + this.value;
 	}
-	public void setText(String text) {
-		this.text = text;
+
+	public int getValue() {
+		return this.value;
+	}
+
+	public void setValue(int value) {
+		this.value = value <= 0 || value > 9 ? 0 : value;
+	}
+
+	@Override
+	public String toString() {
+		return "CellModel("
+			+ "id: " + id
+            + ", isActive: " + isActive
+			+ ", isEnabled: " + isEnabled
+			+ ", value: " + value
+			+ ")";
 	}
 }
