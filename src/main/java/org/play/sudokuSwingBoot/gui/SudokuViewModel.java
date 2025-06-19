@@ -8,24 +8,24 @@ import org.play.sudokuSwingBoot.gui.utils.SudokuWorker;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
 
 @Component
 @Scope("singleton")
 public class SudokuViewModel {
-	private static int NUM_CELLS = 81;
 	
 	private LiveData<CellModel[]> cells;
 	private SudokuWorker<Integer> clickWorker = null;
 	private int currentActiveCellId = -1;
 
 	private boolean isValidCellId(int cellId) {
-		return cellId >=0 && cellId < NUM_CELLS;
+		return cellId >=0 && cellId < GRID_NUM_CELLS;
 	}
 	
 	public SudokuViewModel() {
 
-		CellModel[] cellsArr = new CellModel[NUM_CELLS];
-		for (int i = 0; i < NUM_CELLS; i++) {
+		CellModel[] cellsArr = new CellModel[GRID_NUM_CELLS];
+		for (int i = 0; i < GRID_NUM_CELLS; i++) {
 			cellsArr[i] = new CellModel(i);
 		}
 		cells = new LiveData<CellModel[]>(cellsArr);

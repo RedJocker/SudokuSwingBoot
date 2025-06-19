@@ -13,13 +13,15 @@ import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_NUM_CELLS;
 
 @Component
 @Scope("prototype")
 public class SudokuSquare extends JPanel {
 
-	private static int SIZE = 9;
-	private static int SIDE_SIZE = 3;
 	private static Dimension PREFERED_DIMENSION =
 		new Dimension(50, 50);
 	private static Border BORDER_BLACK =
@@ -31,11 +33,12 @@ public class SudokuSquare extends JPanel {
 	public SudokuSquare() {
         this.setBorder(BORDER_BLACK);
         this.setPreferredSize(PREFERED_DIMENSION);
-		GridLayout layout = new GridLayout(3, 3);
+		GridLayout layout =
+			new GridLayout(SQUARE_SIDE_SIZE, SQUARE_SIDE_SIZE);
 		this.setLayout(layout);
 
-		this.cells = new SudokuCell[SIZE];
-		for (int i = 0; i < SIZE; i++) {
+		this.cells = new SudokuCell[SQUARE_NUM_CELLS];
+		for (int i = 0; i < SQUARE_NUM_CELLS; i++) {
 			SudokuCell cell = new SudokuCell();
 			this.cells[i] = cell;
 			this.add(cell);
@@ -50,14 +53,16 @@ public class SudokuSquare extends JPanel {
 	// 27 28 ...
 	public void setSquareId(int id) { 
 		this.id = id;                 
-		final int squareRow = id / SIDE_SIZE; 
-		final int squareCol = id % SIDE_SIZE; 
+		final int squareRow = id / SQUARE_SIDE_SIZE; 
+		final int squareCol = id % SQUARE_SIDE_SIZE; 
 
-		for (int cellRow = 0; cellRow < SIDE_SIZE; cellRow++) {
-			for (int cellCol = 0; cellCol < SIDE_SIZE; cellCol++) {
-				int cellArrIndex = (SIDE_SIZE * cellRow) + cellCol;
-				int cellId = (SIZE * ((squareRow * SIDE_SIZE) + cellRow))
-					+ ((squareCol * SIDE_SIZE) + cellCol);  
+		for (int cellRow = 0; cellRow < SQUARE_SIDE_SIZE; cellRow++) {
+			for (int cellCol = 0; cellCol < SQUARE_SIDE_SIZE; cellCol++) {
+				int cellArrIndex = (SQUARE_SIDE_SIZE * cellRow) + cellCol;
+				int cellId =
+					(GRID_SIDE_SIZE
+						* ((squareRow * SQUARE_SIDE_SIZE) + cellRow))
+					+ ((squareCol * SQUARE_SIDE_SIZE) + cellCol);  
 				this.cells[cellArrIndex].setId(cellId);
 			}
 		}
@@ -70,16 +75,16 @@ public class SudokuSquare extends JPanel {
 	}
 
     public void onCellChanged(CellModel cellModel) {
-        int cellRow =  cellModel.getId() / SIZE;
-		int cellCol = cellModel.getId() % SIZE;
+        int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
+		int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
 
-		int squareRow = cellRow / SIDE_SIZE;
-		int squareCol = cellCol / SIDE_SIZE;
+		int squareRow = cellRow / SQUARE_SIDE_SIZE;
+		int squareCol = cellCol / SQUARE_SIDE_SIZE;
 
-		int squareCellRow = cellRow - (squareRow * SIDE_SIZE);
-		int squareCellCol = cellCol - (squareCol * SIDE_SIZE); 
+		int squareCellRow = cellRow - (squareRow * SQUARE_SIDE_SIZE);
+		int squareCellCol = cellCol - (squareCol * SQUARE_SIDE_SIZE); 
 
-		int squareCellIndex = (squareCellRow * SIDE_SIZE)
+		int squareCellIndex = (squareCellRow * SQUARE_SIDE_SIZE)
 			+ squareCellCol;
 		cells[squareCellIndex].onCellChanged(cellModel);
     }

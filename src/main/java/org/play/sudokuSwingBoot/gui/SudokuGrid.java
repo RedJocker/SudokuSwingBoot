@@ -9,12 +9,13 @@ import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_SQUARES;
+
 @Component
 @Scope("singleton")
 public class SudokuGrid extends JPanel {
-
-	private static int SIZE = 9;
-	private static int SIDE_SIZE = 3;
 	
 	private SudokuSquare[] squares;
 	
@@ -29,7 +30,8 @@ public class SudokuGrid extends JPanel {
 		SudokuSquare square7,
 		SudokuSquare square8
 	) {
-		GridLayout layout = new GridLayout(3, 3);
+		GridLayout layout =
+			new GridLayout(SQUARE_SIDE_SIZE, SQUARE_SIDE_SIZE);
 		this.setLayout(layout);
 		
 		this.squares = new SudokuSquare[]{
@@ -44,7 +46,7 @@ public class SudokuGrid extends JPanel {
 			square8
 		};
 		
-		for (int i = 0; i < SIZE; i++) {
+		for (int i = 0; i < GRID_NUM_SQUARES; i++) {
 			SudokuSquare square = this.squares[i];
 			square.setSquareId(i);
 			this.add(square);
@@ -58,12 +60,12 @@ public class SudokuGrid extends JPanel {
 	}
 
 	public void onCellChanged(CellModel cellModel) {
-		int cellRow =  cellModel.getId() / SIZE;
-		int cellCol = cellModel.getId() % SIZE;
+		int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
+		int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
 
-		int squareRow = cellRow / SIDE_SIZE;
-		int squareCol = cellCol / SIDE_SIZE;
-		int squareId = (squareRow * SIDE_SIZE) + squareCol;
+		int squareRow = cellRow / SQUARE_SIDE_SIZE;
+		int squareCol = cellCol / SQUARE_SIDE_SIZE;
+		int squareId = (squareRow * SQUARE_SIDE_SIZE) + squareCol;
 
 		squares[squareId].onCellChanged(cellModel);
 	}
