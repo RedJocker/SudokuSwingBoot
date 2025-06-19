@@ -45,3 +45,4 @@ gradlew.bat
 
 *~
 .#*
+.eglot-java
