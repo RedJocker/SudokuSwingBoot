@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -67,4 +68,19 @@ public class SudokuSquare extends JPanel {
 			cell.setOnClickCell(onClickCell);
 		}
 	}
+
+    public void onCellChanged(CellModel cellModel) {
+        int cellRow =  cellModel.getId() / SIZE;
+		int cellCol = cellModel.getId() % SIZE;
+
+		int squareRow = cellRow / SIDE_SIZE;
+		int squareCol = cellCol / SIDE_SIZE;
+
+		int squareCellRow = cellRow - (squareRow * SIDE_SIZE);
+		int squareCellCol = cellCol - (squareCol * SIDE_SIZE); 
+
+		int squareCellIndex = (squareCellRow * SIDE_SIZE)
+			+ squareCellCol;
+		cells[squareCellIndex].onCellChanged(cellModel);
+    }
 }

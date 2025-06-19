@@ -9,11 +9,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import org.play.sudokuSwingBoot.gui.model.CellModel;
+
 public class SudokuCell extends JLabel implements MouseListener {
 
 	private static Border BORDER_GRAY = 
 		BorderFactory.createLineBorder(Color.GRAY);
-	
+	private static Border BORDER_DARK = 
+		BorderFactory.createLineBorder(Color.BLACK, 3);
+
 	private int id = -1;
 	private Consumer<Integer> onClickCell = null;
 	
@@ -58,4 +62,15 @@ public class SudokuCell extends JLabel implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// ignore
 	}
+
+    public void onCellChanged(CellModel cellModel) {
+		System.out.println("SudokuCell.onCellChanged "
+			+ cellModel.getId() + ", " + cellModel.getText());
+		if (cellModel.isActive()) {
+			this.setBorder(BORDER_DARK);
+		} else {
+			this.setBorder(BORDER_GRAY);
+		}
+        
+    }
 }

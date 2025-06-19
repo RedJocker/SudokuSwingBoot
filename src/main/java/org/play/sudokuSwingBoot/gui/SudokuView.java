@@ -6,6 +6,7 @@ import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,14 @@ public class SudokuView extends JFrame {
 		this.setLocationRelativeTo(null);
 
 		this.sudokuGrid.setOnClickCell(viemModel::onCellClick);
+		this.viemModel.observeChangedData(
+			(CellModel cellModel) -> {
+				System.out.println(
+					"id: " + cellModel.getId()
+					+ ", isActive: " + cellModel.isActive()
+				);
+				sudokuGrid.onCellChanged(cellModel);
+		});
 		this.setLayout(borderLayout);
 		
 		this.add(sudokuTitle, BorderLayout.NORTH);
