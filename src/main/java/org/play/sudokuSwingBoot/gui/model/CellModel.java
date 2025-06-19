@@ -4,12 +4,14 @@ public class CellModel {
 	private final int id;
 	private boolean isActive;
 	private boolean isEnabled;
+	private boolean isValid;
 	private int value;
 
 	public CellModel(int id) {
 		this.id = id;
 		this.isActive = false;
 		this.isEnabled = true;
+		this.isValid = true;
 		this.value = 0;
 	}
 
@@ -33,6 +35,14 @@ public class CellModel {
 		this.isEnabled = isEnabled;
 	}
 
+	public boolean isValid() {
+		return isValid;
+	}
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+
 	public String getText() {
 		if (this.value <= 0)
 			return "";
@@ -53,6 +63,7 @@ public class CellModel {
 			+ "id: " + id
             + ", isActive: " + isActive
 			+ ", isEnabled: " + isEnabled
+			+ ", isValid: " + isValid
 			+ ", value: " + value
 			+ ")";
 	}

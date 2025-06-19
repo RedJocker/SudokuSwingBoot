@@ -75,6 +75,14 @@ public class SudokuCell extends JLabel implements MouseListener {
 		} else {
 			this.setBorder(BORDER_GRAY);
 		}
+
+		if (!cellModel.isValid()) {
+			this.setBackground(Color.RED);
+			this.setOpaque(true);
+		} else {
+			this.setBackground(Color.WHITE);
+			this.setOpaque(false);
+		}
 		this.setText(cellModel.getText());
     }
 }
