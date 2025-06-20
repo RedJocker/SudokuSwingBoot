@@ -2,7 +2,6 @@ package org.play.sudokuSwingBoot.gui;
 
 import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.function.Consumer;
 
@@ -41,7 +40,7 @@ public class SudokuViewModel {
 		return cellId >=0 && cellId < GRID_NUM_CELLS;
 	}
 
-	public void observeChangedData(Consumer<CellModel> callback) {
+	public void observeCellChange(Consumer<CellModel> callback) {
 		cells.observe((cellsArr) -> {
 			for (int cellIdToRefresh : this.refreshCells) {
 				callback.accept(
@@ -85,6 +84,7 @@ public class SudokuViewModel {
 			System.out.println("Game is already complete");
 			return;
 		}
+
 		if (!isValidCellId(currentActiveCellId)) {
 			System.out.println("No Cell Selected");
 			return;
@@ -118,13 +118,13 @@ public class SudokuViewModel {
 		this.clickWorker = new SudokuWorker<SudokuBoardState>(
 			() -> {
 				System.out.println("working");
-				System.out.println(Arrays.toString(cells.getData()));
 				return this.sudokuService.boardState(cells.getData());
 			},
 			(SudokuBoardState boardState) -> {
 				System.out.println(boardState);
 				for (int cellId : boardState.invalidCells()) {
-					this.cells.getData()[cellId].setValid(false);
+					this.cells.getData()[cellId]
+						.setValid(false);
 					refreshCells.add(cellId);
 				}
 				

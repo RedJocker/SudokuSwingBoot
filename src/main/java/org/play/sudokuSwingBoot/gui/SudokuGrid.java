@@ -1,5 +1,9 @@
 package org.play.sudokuSwingBoot.gui;
 
+import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_SQUARES;
+import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
+
 import java.awt.GridLayout;
 import java.util.function.Consumer;
 
@@ -8,10 +12,6 @@ import javax.swing.JPanel;
 import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
-import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
-import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_SQUARES;
 
 @Component
 @Scope("singleton")

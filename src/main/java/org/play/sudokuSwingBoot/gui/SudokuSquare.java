@@ -1,5 +1,9 @@
 package org.play.sudokuSwingBoot.gui;
 
+import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_NUM_CELLS;
+import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -12,11 +16,6 @@ import javax.swing.border.Border;
 import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
-import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
-import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
-import static org.play.sudokuSwingBoot.Sudoku.SQUARE_NUM_CELLS;
 
 @Component
 @Scope("prototype")

@@ -1,15 +1,14 @@
 package org.play.sudokuSwingBoot.gui;
 
 import java.awt.GridLayout;
+import java.util.function.Consumer;
 
-import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Scope;
-
-import java.util.function.Consumer;
+import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")

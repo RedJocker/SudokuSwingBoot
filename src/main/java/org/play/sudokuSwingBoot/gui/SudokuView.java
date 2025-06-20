@@ -35,7 +35,7 @@ public class SudokuView extends JFrame {
 		this.setLocationRelativeTo(null);
 
 		this.sudokuGrid.setOnClickCell(viewModel::onCellClick);
-		this.viewModel.observeChangedData(
+		this.viewModel.observeCellChange(
 			(CellModel cellModel) -> {
 				System.out.println(
 					"id: " + cellModel.getId()
