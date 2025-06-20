@@ -1,94 +1,18 @@
 package org.play.sudokuSwingBoot.gui;
 
-import java.util.function.Consumer;
-import java.util.Set;
-import java.util.HashSet;
+import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
+
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.function.Consumer;
 
 import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.play.sudokuSwingBoot.gui.utils.LiveData;
 import org.play.sudokuSwingBoot.gui.utils.SudokuWorker;
+import org.play.sudokuSwingBoot.service.SudokuService;
+import org.play.sudokuSwingBoot.service.model.SudokuBoardState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
-import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
-import org.play.sudokuSwingBoot.Sudoku;
-
-
-record SudokuBoardState(
-	boolean isComplete, Set<Integer> invalidCells) {
-}
-
-@Component
-@Scope("singleton")
-class SudokuService {
-
-	private void checkRow(
-		int row,
-		CellModel[] cells,
-		HashSet<Integer> invalidCells,
-		boolean[] isComplete
-	) {
-		int[] numbers = new int[10];
-
-		for (int col = 0; col < GRID_SIDE_SIZE; col++) {
-			int cellId = Sudoku.cellId(row, col);
-			CellModel cell = cells[cellId];
-			if (cell.getValue() == 0) {
-				isComplete[0] = false;
-			} else if (numbers[cell.getValue()] == 0) {
-				numbers[cell.getValue()] = cellId + 1; //1-index
-				                            //to avoid 0 default value
-			} else {
-				invalidCells.add(cellId);
-				invalidCells.add(numbers[cell.getValue()] - 1);
-			}
-			//			System.out.println("cellId: " + cellId);
-			//System.out.println("invalidCells: " + invalidCells.toString());
-			//System.out.println("numbers: " + Arrays.toString(numbers));
-		}
-	}
-	
-	private void checkSameRow(
-		CellModel[] cells,
-		HashSet<Integer> invalidCells,
-		boolean[] isComplete
-	) {
-		for (int row = 0; row < GRID_SIDE_SIZE; row++) {
-			checkRow(row, cells, invalidCells, isComplete);
-		}
-	}
-
-	private void checkSameCol(
-		CellModel[] cells,
-		HashSet<Integer> invalidCells,
-		boolean[] isComplete
-	) {
-		// TODO:
-		
-	}
-
-	private void checkSameSquare(
-		CellModel[] cells,
-		HashSet<Integer> invalidCells,
-		boolean[] isComplete 
-	) {
-		// TODO:
-	}
-	
-	SudokuBoardState boardState(CellModel[] cells) {
-		HashSet<Integer> invalidCells = new HashSet<>();
-		boolean[] isComplete = { true };
-		checkSameRow(cells, invalidCells, isComplete);
-		checkSameCol(cells, invalidCells, isComplete);
-		checkSameSquare(cells, invalidCells, isComplete);
-		isComplete[0] = isComplete[0] && invalidCells.isEmpty();
-		return new SudokuBoardState(isComplete[0], invalidCells);
-	}
-}
-
-
 
 @Component
 @Scope("singleton")
@@ -110,13 +34,13 @@ public class SudokuViewModel {
 		}
 		cells = new LiveData<CellModel[]>(cellsArr);
 		isComplete = new LiveData<Boolean>(false);
-		refreshCells = new HashSet();
+		refreshCells = new HashSet<>();
 	}
 	
 	private boolean isValidCellId(int cellId) {
 		return cellId >=0 && cellId < GRID_NUM_CELLS;
 	}
-	
+
 	public void observeChangedData(Consumer<CellModel> callback) {
 		cells.observe((cellsArr) -> {
 			for (int cellIdToRefresh : this.refreshCells) {
@@ -191,8 +115,10 @@ public class SudokuViewModel {
 					this.cells.getData()[cellId].setValid(false);
 					refreshCells.add(cellId);
 				}
+				
 				cells.setData(cells.getData(), true);
 				refreshCells.clear();
+				isComplete.setData(boardState.isComplete());
 			}
 		);
 		this.clickWorker.execute();
