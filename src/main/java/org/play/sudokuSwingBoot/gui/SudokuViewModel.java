@@ -1,6 +1,7 @@
 package org.play.sudokuSwingBoot.gui;
 
 import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
+import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
 
 import java.util.HashSet;
 import java.util.function.Consumer;
@@ -35,9 +36,78 @@ public class SudokuViewModel {
 		isComplete = new LiveData<Boolean>(false);
 		refreshCells = new HashSet<>();
 	}
-	
+
 	private boolean isValidCellId(int cellId) {
 		return cellId >=0 && cellId < GRID_NUM_CELLS;
+	}
+
+	private void currentCellUpdateValue(int value) {
+		cells.getData()[currentActiveCellId]
+			.setValue(value);
+		this.refreshCells.add(currentActiveCellId);
+	}
+
+	private void currentCellClearActive() {
+		if (isValidCellId(currentActiveCellId)) {
+			cells.getData()[currentActiveCellId]
+				.setActive(false);
+			this.refreshCells.add(currentActiveCellId);
+		}
+	}
+
+	private void currentCellUpdateActive(int cellId) {
+		currentCellClearActive();
+		if (cellId != currentActiveCellId && isValidCellId(cellId)) {
+			currentActiveCellId = cellId;
+			cells.getData()[currentActiveCellId]
+				.setActive(true);
+			this.refreshCells.add(currentActiveCellId);
+		} else {
+			currentActiveCellId = -1;
+		}
+	}
+
+	/**
+	 *  Spawns a SwingWorker that computes board state,
+	 *  getting completion status and invalid squares,
+	 *  updates cellModels with new status and trigger cells observers
+	 */
+	private void spawnBoardStateWorker() {
+		// reset invalid state,
+		// worker will recompute all invalid and set it again
+		for (CellModel c: cells.getData()) {
+			if(!c.isValid()) {
+				c.setValid(true);
+				refreshCells.add(c.getId());
+		    }
+		}
+
+		if (clickWorker != null
+			&& !clickWorker.isDone() && !clickWorker.isCancelled()) {
+			System.out.println("cancelling previous worker");
+			boolean interruptIfRunning = true;
+			clickWorker.cancel(interruptIfRunning);
+		}
+
+		this.clickWorker = new SudokuWorker<SudokuBoardState>(
+			() -> {
+				System.out.println("working");
+				return this.sudokuService.boardState(cells.getData());
+			},
+			(SudokuBoardState boardState) -> {
+				System.out.println(boardState);
+				for (int cellId : boardState.invalidCells()) {
+					this.cells.getData()[cellId]
+						.setValid(false);
+					refreshCells.add(cellId);
+				}
+				cells.setData(cells.getData(), true);
+				refreshCells.clear();
+				isComplete.setData(boardState.isComplete());
+				System.out.println("finished working");
+			}
+		);
+		this.clickWorker.execute();
 	}
 
 	public void observeCellChange(Consumer<CellModel> callback) {
@@ -60,20 +130,8 @@ public class SudokuViewModel {
 			System.out.println("Game is already complete");
 			return;
 		}
-		if (isValidCellId(currentActiveCellId)) {
-			cells.getData()[currentActiveCellId]
-				.setActive(false);
-			this.refreshCells.add(currentActiveCellId);
-		}
-		if (cellId != currentActiveCellId && isValidCellId(cellId)) {
-			currentActiveCellId = cellId;
-			cells.getData()[currentActiveCellId]
-				.setActive(true);
-			this.refreshCells.add(currentActiveCellId);
-		} else {
-			currentActiveCellId = -1;
-		}
-		cells.setData(cells.getData(), true);
+		this.currentCellUpdateActive(cellId);
+		this.cells.setData(cells.getData(), true);
 		this.refreshCells.clear();
 	}
 
@@ -93,46 +151,60 @@ public class SudokuViewModel {
 		CellModel cell = cells.getData()[currentActiveCellId];
 		if (buttonId == cell.getValue())
 			return;
-
-		cell.setValue(buttonId);
-		this.refreshCells.add(cell.getId());
-		
-		// reset invalid state
-		for (CellModel c: cells.getData()) {
-			if(!c.isValid()) {
-				c.setValid(true);
-				refreshCells.add(c.getId());
-		    }
-		}
+		int newValue = buttonId;
+		currentCellUpdateValue(newValue);
 		this.spawnBoardStateWorker();
 	}
 
-	private void spawnBoardStateWorker() {
-		if (clickWorker != null
-			&& !clickWorker.isDone() && !clickWorker.isCancelled()) {
-			System.out.println("cancelling previous");
-			boolean interruptIfRunning = true;
-			clickWorker.cancel(interruptIfRunning);
+    public void onSudokuKey(String keyEvent) {
+		System.out.println("keyEvent: " + keyEvent);
+		if (isComplete.getData()) {
+			System.out.println("Game is already complete");
+			return;
 		}
 
-		this.clickWorker = new SudokuWorker<SudokuBoardState>(
-			() -> {
-				System.out.println("working");
-				return this.sudokuService.boardState(cells.getData());
-			},
-			(SudokuBoardState boardState) -> {
-				System.out.println(boardState);
-				for (int cellId : boardState.invalidCells()) {
-					this.cells.getData()[cellId]
-						.setValid(false);
-					refreshCells.add(cellId);
-				}
-				
-				cells.setData(cells.getData(), true);
-				refreshCells.clear();
-				isComplete.setData(boardState.isComplete());
-			}
-		);
-		this.clickWorker.execute();
+		switch(keyEvent) {
+		    case "active-right" -> {
+		    	onSudokuKeyMoveActive(1);
+		    }
+		    case "active-left" -> {
+		    	onSudokuKeyMoveActive(-1);
+		    }
+		    case "active-up" -> {
+		    	onSudokuKeyMoveActive(GRID_SIDE_SIZE);
+		    }
+		    case "active-down" -> {
+		    	onSudokuKeyMoveActive(-GRID_SIDE_SIZE);
+		    }
+		    case "clear" -> {
+		    	this.currentCellUpdateValue(0);
+		    	this.spawnBoardStateWorker();
+		    }
+		    default -> {
+		    	if (keyEvent.startsWith("put-")) {
+		    		int value = keyEvent.charAt(4) - '0';
+		    		this.currentCellUpdateValue(value);
+		    		this.spawnBoardStateWorker();
+		    	}
+		    }
+		}
+    }
+
+	private void onSudokuKeyMoveActive(int offset) {
+		int newCellId;
+		if (Math.abs(offset) == 1) {
+			newCellId =
+				((currentActiveCellId + offset + GRID_SIDE_SIZE)
+					% GRID_SIDE_SIZE)
+				+ ((currentActiveCellId / GRID_SIDE_SIZE)
+					* GRID_SIDE_SIZE);
+		} else {
+			newCellId =
+				((currentActiveCellId + offset + GRID_NUM_CELLS)
+					% GRID_NUM_CELLS);
+		}
+		this.currentCellUpdateActive(newCellId);
+		cells.setData(cells.getData(), true);
+		this.refreshCells.clear();
 	}
 }
