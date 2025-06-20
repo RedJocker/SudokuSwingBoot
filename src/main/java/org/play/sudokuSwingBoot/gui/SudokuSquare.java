@@ -88,4 +88,12 @@ public class SudokuSquare extends JPanel {
 			+ squareCellCol;
 		cells[squareCellIndex].onCellChanged(cellModel);
     }
+
+    public void onComplete(Boolean isComplete) {
+		if (!isComplete)
+			return ;
+        for(SudokuCell cell: cells) {
+			cell.onComplete(isComplete);
+		}
+    }
 }

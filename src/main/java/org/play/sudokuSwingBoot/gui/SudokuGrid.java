@@ -60,13 +60,19 @@ public class SudokuGrid extends JPanel {
 	}
 
 	public void onCellChanged(CellModel cellModel) {
-		int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
-		int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
+		final int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
+		final int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
 
-		int squareRow = cellRow / SQUARE_SIDE_SIZE;
-		int squareCol = cellCol / SQUARE_SIDE_SIZE;
-		int squareId = (squareRow * SQUARE_SIDE_SIZE) + squareCol;
+		final int squareRow = cellRow / SQUARE_SIDE_SIZE;
+		final int squareCol = cellCol / SQUARE_SIDE_SIZE;
+		final int squareId = (squareRow * SQUARE_SIDE_SIZE) + squareCol;
 
 		squares[squareId].onCellChanged(cellModel);
+	}
+
+	public void onComplete(Boolean isComplete) {
+		for (final SudokuSquare square : this.squares) {
+			square.onComplete(isComplete);
+		}
 	}
 }

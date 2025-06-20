@@ -1,13 +1,9 @@
 package org.play.sudokuSwingBoot.gui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.play.sudokuSwingBoot.gui.model.CellModel;
@@ -47,6 +43,8 @@ public class SudokuView extends JFrame {
 				);
 				sudokuGrid.onCellChanged(cellModel);
 		});
+
+		this.viewModel.observeIsComplete(sudokuGrid::onComplete);
 
 		this.sudokuControl
 			.setOnControlClick(this.viewModel::onControlClick);

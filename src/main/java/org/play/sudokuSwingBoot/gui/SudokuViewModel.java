@@ -51,8 +51,16 @@ public class SudokuViewModel {
 		});
 	}
 
+	public void observeIsComplete(Consumer<Boolean> onComplete){
+		isComplete.observe(onComplete);
+	}
+
 	public void onCellClick(int cellId) {
 		System.out.println("Cell clicked " + cellId);
+		if (isComplete.getData()) {
+			System.out.println("Game is already complete");
+			return;
+		}
 		if (isValidCellId(currentActiveCellId)) {
 			cells.getData()[currentActiveCellId]
 				.setActive(false);
@@ -73,6 +81,10 @@ public class SudokuViewModel {
 	public void onControlClick(int buttonId) {
 
 		System.out.println("Button Clicked: " + buttonId);
+		if (isComplete.getData()) {
+			System.out.println("Game is already complete");
+			return;
+		}
 		if (!isValidCellId(currentActiveCellId)) {
 			System.out.println("No Cell Selected");
 			return;

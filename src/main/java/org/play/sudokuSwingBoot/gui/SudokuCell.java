@@ -85,4 +85,12 @@ public class SudokuCell extends JLabel implements MouseListener {
 		}
 		this.setText(cellModel.getText());
     }
+
+    public void onComplete(Boolean isComplete) {
+		if (!isComplete)
+			return ;
+        this.setEnabled(false);
+		this.setBackground(Color.GREEN);
+		this.setOpaque(true);
+    }
 }
