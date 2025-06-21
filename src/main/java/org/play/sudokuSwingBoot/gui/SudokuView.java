@@ -33,6 +33,7 @@ public class SudokuView extends JFrame {
 		System.out.println(
 			Arrays.toString(args.getSourceArgs())
 		);
+
 		this.setTitle("Sudoku Swing Boot");
 		this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +48,7 @@ public class SudokuView extends JFrame {
 				);
 				sudokuGrid.onCellChanged(cellModel);
 		});
-
+		this.viewModel.initBoard();
 		this.viewModel.observeIsComplete(sudokuGrid::onComplete);
 
 		this.sudokuControl
@@ -72,6 +73,7 @@ public class SudokuView extends JFrame {
 		createSudokuKeybinding("put-9", KeyEvent.VK_9);
 		createSudokuKeybinding("clear", KeyEvent.VK_0);
 		createSudokuKeybinding("clear", KeyEvent.VK_X);
+
 		this.setVisible(true);
 	}
 

@@ -9,8 +9,10 @@ import java.util.function.Consumer;
 import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.play.sudokuSwingBoot.gui.utils.LiveData;
 import org.play.sudokuSwingBoot.gui.utils.SudokuWorker;
+import org.play.sudokuSwingBoot.service.SudokuBoardGenerator;
 import org.play.sudokuSwingBoot.service.SudokuService;
 import org.play.sudokuSwingBoot.service.model.SudokuBoardState;
+import org.play.sudokuSwingBoot.service.model.SudokuRawBoard;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Scope("singleton")
 public class SudokuViewModel {
 
+	private final SudokuBoardGenerator generator;
 	private final SudokuService sudokuService;
 	private LiveData<CellModel[]> cells;
 	private LiveData<Boolean> isComplete;
@@ -25,9 +28,12 @@ public class SudokuViewModel {
 	private int currentActiveCellId = -1;
 	private HashSet<Integer> refreshCells;
 
-	public SudokuViewModel(SudokuService sudokuService) {
+	public SudokuViewModel(
+		SudokuService sudokuService,
+		SudokuBoardGenerator sudokuBoardGenerator
+	) {
 		this.sudokuService = sudokuService;
-
+		this.generator = sudokuBoardGenerator;
 		CellModel[] cellsArr = new CellModel[GRID_NUM_CELLS];
 		for (int i = 0; i < GRID_NUM_CELLS; i++) {
 			cellsArr[i] = new CellModel(i);
@@ -42,8 +48,10 @@ public class SudokuViewModel {
 	}
 
 	private void currentCellUpdateValue(int value) {
-		cells.getData()[currentActiveCellId]
-			.setValue(value);
+		final CellModel cell = cells.getData()[currentActiveCellId];
+		if (!cell.isEnabled())
+			return ;
+		cell.setValue(value);
 		this.refreshCells.add(currentActiveCellId);
 	}
 
@@ -65,6 +73,29 @@ public class SudokuViewModel {
 		} else {
 			currentActiveCellId = -1;
 		}
+	}
+
+	public void initBoard() {
+		SudokuWorker<SudokuRawBoard> initWorker =
+			new SudokuWorker<SudokuRawBoard>(
+			() -> {
+				System.out.println("generating board");
+				return this.generator.generateBoard();
+			},
+			(SudokuRawBoard board) -> {
+				for (int i = 0; i < GRID_NUM_CELLS; i++) {
+					int value = board.rawBoard()[i];
+					CellModel cell = cells.getData()[i];
+					cell.setValue(value);
+					cell.setEnabled(value == 0);
+					refreshCells.add(i);
+				}
+				cells.setData(cells.getData(), true);
+				refreshCells.clear();
+				System.out.println("finished loading board");
+			}
+		);
+		initWorker.execute();
 	}
 
 	/**
@@ -181,7 +212,9 @@ public class SudokuViewModel {
 		    	this.spawnBoardStateWorker();
 		    }
 		    default -> {
-		    	if (keyEvent.startsWith("put-")) {
+				if (!isValidCellId(currentActiveCellId)) {
+					System.out.println("No Cell Selected");
+				} else if (keyEvent.startsWith("put-")) {
 		    		int value = keyEvent.charAt(4) - '0';
 		    		this.currentCellUpdateValue(value);
 		    		this.spawnBoardStateWorker();
