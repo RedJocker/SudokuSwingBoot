@@ -23,6 +23,7 @@ public class SudokuView extends JFrame {
 	private final SudokuViewModel viewModel;
 	private final SudokuGrid sudokuGrid;
 	private final SudokuControl sudokuControl;
+	private final SudokuMenuBar sudokuMenuBar;
 
 	private void initSudokuView(
 		final BorderLayout borderLayout,
@@ -74,6 +75,7 @@ public class SudokuView extends JFrame {
 		createSudokuKeybinding("clear", KeyEvent.VK_0);
 		createSudokuKeybinding("clear", KeyEvent.VK_X);
 
+		this.setJMenuBar(this.sudokuMenuBar);
 		this.setVisible(true);
 	}
 
@@ -100,11 +102,13 @@ public class SudokuView extends JFrame {
 		final SudokuTitle sudokuTitle,
 		final ApplicationArguments args,
 		final SudokuGrid sudokuGrid,
-		final SudokuControl sudokuControl
+		final SudokuControl sudokuControl,
+		final SudokuMenuBar sudokuMenuBar
 	) {
 		this.viewModel = viewModel;
 		this.sudokuGrid = sudokuGrid;
 		this.sudokuControl = sudokuControl;
+		this.sudokuMenuBar = sudokuMenuBar;
 		SwingUtilities.invokeLater((Runnable) () -> {
 				initSudokuView(
 					borderLayout,

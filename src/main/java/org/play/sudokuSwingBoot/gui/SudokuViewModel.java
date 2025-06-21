@@ -240,4 +240,10 @@ public class SudokuViewModel {
 		cells.setData(cells.getData(), true);
 		this.refreshCells.clear();
 	}
+
+    public void onNewGame() {
+		System.out.println("New Game");
+		this.initBoard();
+    }
+
 }
