@@ -259,6 +259,8 @@ public class SudokuViewModel {
 		
 		for (CellModel cell : board) {
 			refreshCells.add(cell.getId());
+			if (cell.isActive())
+				currentActiveCellId = cell.getId();
 		}
 
 		cells.setData(board.toArray(CellModel[]::new), true);
