@@ -3,7 +3,9 @@ package org.play.sudokuSwingBoot.gui;
 import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
 import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.play.sudokuSwingBoot.gui.model.CellModel;
@@ -244,6 +246,22 @@ public class SudokuViewModel {
     public void onNewGame() {
 		System.out.println("New Game");
 		this.initBoard();
+    }
+
+	public List<CellModel> getBoard() {
+		return Arrays.stream(this.cells.getData())
+			.toList();
+	}
+
+    public void loadBoard(List<CellModel> board) {
+		if (board == null)
+			return;
+		
+		for (CellModel cell : board) {
+			refreshCells.add(cell.getId());
+		}
+
+		cells.setData(board.toArray(CellModel[]::new), true);
     }
 
 }

@@ -1,6 +1,8 @@
 package org.play.sudokuSwingBoot.gui.model;
 
-public class CellModel {
+import java.io.Serializable;
+
+public class CellModel implements Serializable {
 	private final int id;
 	private boolean isActive;
 	private boolean isEnabled;

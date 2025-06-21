@@ -2,20 +2,34 @@ package org.play.sudokuSwingBoot.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import org.play.sudokuSwingBoot.gui.model.CellModel;
+import org.play.sudokuSwingBoot.service.FileService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
 public class SudokuMenuBar extends JMenuBar{
-	public SudokuMenuBar(final SudokuViewModel sudokuViewModel) {
+	final FileService fileService;
+	final SudokuViewModel sudokuViewModel;
+	
+	public SudokuMenuBar(
+		final FileService fileService,
+		final SudokuViewModel sudokuViewModel) {
 
+		this.fileService = fileService;
+		this.sudokuViewModel = sudokuViewModel;
+		
 		final JMenu menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_F);
 		menu.getAccessibleContext()
@@ -40,9 +54,7 @@ public class SudokuMenuBar extends JMenuBar{
 				KeyEvent.VK_L, ActionEvent.ALT_MASK));
 		loadMenuItem.getAccessibleContext()
 			.setAccessibleDescription("Load saved sudoku game");
-		loadMenuItem.addActionListener(
-			(e) -> System.out.println("Load Clicked")
-		);
+		loadMenuItem.addActionListener(this::onLoad);
 		menu.add(loadMenuItem);
 
 		final JMenuItem saveMenuItem =
@@ -51,9 +63,42 @@ public class SudokuMenuBar extends JMenuBar{
 				KeyEvent.VK_S, ActionEvent.ALT_MASK));
 		saveMenuItem.getAccessibleContext()
 			.setAccessibleDescription("Save a sudoku game");
-		saveMenuItem.addActionListener(
-			(e) -> System.out.println("Save Clicked")
-		);
+		saveMenuItem.addActionListener(this::onSave);
 		menu.add(saveMenuItem);
+	}
+
+	private void onSave(ActionEvent e) {
+		System.out.println("Save Clicked");
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showSaveDialog(this.getParent());
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			try {
+				this.fileService.saveGame(
+					file, sudokuViewModel.getBoard()
+				);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
+	}
+
+	private void onLoad(ActionEvent e) {
+		System.out.println("Load Clicked");
+		final JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(this.getParent());
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			try {
+				List<CellModel> board = this.fileService.loadGame(
+					file
+				);
+				sudokuViewModel.loadBoard(board);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		}
 	}
 }
