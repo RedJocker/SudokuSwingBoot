@@ -90,9 +90,12 @@ public class SudokuViewModel {
 					CellModel cell = cells.getData()[i];
 					cell.setValue(value);
 					cell.setEnabled(value == 0);
+					cell.setActive(false);
+					cell.setValid(true);
 					refreshCells.add(i);
 				}
 				cells.setData(cells.getData(), true);
+				currentActiveCellId = -1;
 				refreshCells.clear();
 				System.out.println("finished loading board");
 			}
@@ -227,6 +230,10 @@ public class SudokuViewModel {
 
 	private void onSudokuKeyMoveActive(int offset) {
 		int newCellId;
+		currentActiveCellId =
+			currentActiveCellId < 0
+			? 0
+			: currentActiveCellId;
 		if (Math.abs(offset) == 1) {
 			newCellId =
 				((currentActiveCellId + offset + GRID_SIDE_SIZE)
