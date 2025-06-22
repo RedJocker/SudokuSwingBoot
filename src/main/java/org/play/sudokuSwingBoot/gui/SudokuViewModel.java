@@ -268,6 +268,8 @@ public class SudokuViewModel {
 
     public void onNewGame() {
 		System.out.println("New Game");
+		if (this.isComplete.getData())
+			this.isComplete.setData(false);
 		this.initBoard();
     }
 
@@ -279,6 +281,8 @@ public class SudokuViewModel {
     public void loadBoard(List<CellModel> board) {
 		if (board == null)
 			return;
+		if (this.isComplete.getData())
+			this.isComplete.setData(false);
 		
 		for (CellModel cell : board) {
 			refreshCells.add(cell.getId());
@@ -316,6 +320,8 @@ public class SudokuViewModel {
 			return ;
 		}
 
+		if (this.isComplete.getData())
+			this.isComplete.setData(false);
 		CellModel[] newCells = cells.getData();
 		for (int cellId = 0; cellId < GRID_NUM_CELLS; cellId++) {
 			newCells[cellId] = new CellModel(cellId);
