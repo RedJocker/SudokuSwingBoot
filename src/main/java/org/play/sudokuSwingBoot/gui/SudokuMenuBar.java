@@ -22,13 +22,17 @@ import org.springframework.stereotype.Component;
 public class SudokuMenuBar extends JMenuBar{
 	final SudokuFileService fileService;
 	final SudokuViewModel sudokuViewModel;
+	final JFileChooser fileChooser;
 	
 	public SudokuMenuBar(
 		final SudokuFileService fileService,
-		final SudokuViewModel sudokuViewModel) {
+		final SudokuViewModel sudokuViewModel,
+		final JFileChooser fileChooser
+	) {
 
 		this.fileService = fileService;
 		this.sudokuViewModel = sudokuViewModel;
+		this.fileChooser = fileChooser;
 		
 		final JMenu menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_F);
@@ -69,11 +73,9 @@ public class SudokuMenuBar extends JMenuBar{
 
 	private void onSave(ActionEvent e) {
 		System.out.println("Save Clicked");
-		final JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("./"));
-		int returnVal = fc.showSaveDialog(this.getParent());
+		int returnVal = fileChooser.showSaveDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 			try {
 				this.fileService.saveGame(
 					file, sudokuViewModel.getBoard()
@@ -86,11 +88,10 @@ public class SudokuMenuBar extends JMenuBar{
 
 	private void onLoad(ActionEvent e) {
 		System.out.println("Load Clicked");
-		final JFileChooser fc = new JFileChooser();
-		fc.setCurrentDirectory(new File("./"));
-		int returnVal = fc.showOpenDialog(this.getParent());
+
+		int returnVal = fileChooser.showOpenDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 			try {
 				List<CellModel> board = this.fileService.loadGame(
 					file

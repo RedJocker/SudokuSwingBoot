@@ -22,11 +22,15 @@ public class SudokuFileService {
 	public void saveGame(File saveFile, List<CellModel> boardModel)
 		throws IOException {
 
-		if (!saveFile.exists()) {
-			saveFile.createNewFile();
+		final File saveFileNorm = saveFile.getName().endsWith(".sudoku")
+			? saveFile
+			: new File(saveFile.getName() + ".sudoku");
+		if (!saveFileNorm.exists()) {
+			saveFileNorm.createNewFile();
 		}
 
-		final FileOutputStream fout = new FileOutputStream(saveFile);
+		final FileOutputStream fout =
+			new FileOutputStream(saveFileNorm);
 		final ObjectOutputStream out = new ObjectOutputStream(
 			new BufferedOutputStream(fout)
 		);
