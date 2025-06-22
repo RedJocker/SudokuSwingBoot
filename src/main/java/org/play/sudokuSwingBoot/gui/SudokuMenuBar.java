@@ -139,7 +139,8 @@ public class SudokuMenuBar extends JMenuBar{
 				"Do you really want to start a new game?",
 				"New game",
 				JOptionPane.YES_NO_OPTION);
-		sudokuViewModel.onExit();
+		if (result == JFileChooser.APPROVE_OPTION)
+			sudokuViewModel.onExit();
 	}
 
 	private void onImport(ActionEvent e) {
