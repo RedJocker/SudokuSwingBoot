@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.play.sudokuSwingBoot.gui.utils.SudokuKeyAction;
+import org.play.sudokuSwingBoot.model.CellModel;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 

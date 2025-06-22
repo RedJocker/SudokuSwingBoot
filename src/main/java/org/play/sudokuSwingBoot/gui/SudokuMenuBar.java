@@ -13,7 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.play.sudokuSwingBoot.gui.model.CellModel;
+import org.play.sudokuSwingBoot.model.CellModel;
 import org.play.sudokuSwingBoot.service.SudokuFileService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

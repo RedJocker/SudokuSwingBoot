@@ -1,4 +1,4 @@
-package org.play.sudokuSwingBoot.service.model;
+package org.play.sudokuSwingBoot.model;
 
 import java.util.Set;
 

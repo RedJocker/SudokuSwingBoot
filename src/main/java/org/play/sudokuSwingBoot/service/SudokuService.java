@@ -6,8 +6,8 @@ import static org.play.sudokuSwingBoot.Sudoku.SQUARE_SIDE_SIZE;
 import java.util.HashSet;
 
 import org.play.sudokuSwingBoot.Sudoku;
-import org.play.sudokuSwingBoot.gui.model.CellModel;
-import org.play.sudokuSwingBoot.service.model.SudokuBoardState;
+import org.play.sudokuSwingBoot.model.CellModel;
+import org.play.sudokuSwingBoot.model.SudokuBoardState;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

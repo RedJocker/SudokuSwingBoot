@@ -1,4 +1,4 @@
-package org.play.sudokuSwingBoot.gui.model;
+package org.play.sudokuSwingBoot.model;
 
 import java.io.Serializable;
 

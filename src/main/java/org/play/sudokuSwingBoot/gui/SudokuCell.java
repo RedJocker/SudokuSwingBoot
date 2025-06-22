@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
-import org.play.sudokuSwingBoot.gui.model.CellModel;
+import org.play.sudokuSwingBoot.model.CellModel;
 
 public class SudokuCell extends JLabel implements MouseListener {
 

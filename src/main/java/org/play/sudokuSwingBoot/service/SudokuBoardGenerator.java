@@ -1,6 +1,6 @@
 package org.play.sudokuSwingBoot.service;
 
-import org.play.sudokuSwingBoot.service.model.SudokuRawBoard;
+import org.play.sudokuSwingBoot.model.SudokuRawBoard;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.play.sudokuSwingBoot.gui.model.CellModel;
 import org.play.sudokuSwingBoot.gui.utils.LiveData;
 import org.play.sudokuSwingBoot.gui.utils.SudokuWorker;
+import org.play.sudokuSwingBoot.model.CellModel;
+import org.play.sudokuSwingBoot.model.SudokuBoardState;
+import org.play.sudokuSwingBoot.model.SudokuRawBoard;
 import org.play.sudokuSwingBoot.service.SudokuBoardGenerator;
 import org.play.sudokuSwingBoot.service.SudokuService;
-import org.play.sudokuSwingBoot.service.model.SudokuBoardState;
-import org.play.sudokuSwingBoot.service.model.SudokuRawBoard;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
