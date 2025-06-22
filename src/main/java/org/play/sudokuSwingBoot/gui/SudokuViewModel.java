@@ -3,10 +3,13 @@ package org.play.sudokuSwingBoot.gui;
 import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
 import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
+
+import javax.swing.JOptionPane;
 
 import org.play.sudokuSwingBoot.gui.utils.LiveData;
 import org.play.sudokuSwingBoot.gui.utils.SudokuWorker;
@@ -14,7 +17,9 @@ import org.play.sudokuSwingBoot.model.CellModel;
 import org.play.sudokuSwingBoot.model.SudokuBoardState;
 import org.play.sudokuSwingBoot.model.SudokuRawBoard;
 import org.play.sudokuSwingBoot.service.SudokuBoardGenerator;
+import org.play.sudokuSwingBoot.service.SudokuImportService;
 import org.play.sudokuSwingBoot.service.SudokuService;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +29,8 @@ public class SudokuViewModel {
 
 	private final SudokuBoardGenerator generator;
 	private final SudokuService sudokuService;
+	private final SudokuImportService importService;
+
 	private LiveData<CellModel[]> cells;
 	private LiveData<Boolean> isComplete;
 	private LiveData<Boolean> shouldExit;
@@ -33,10 +40,13 @@ public class SudokuViewModel {
 
 	public SudokuViewModel(
 		SudokuService sudokuService,
-		SudokuBoardGenerator sudokuBoardGenerator
+		SudokuBoardGenerator sudokuBoardGenerator,
+		SudokuImportService sudokuImportService
 	) {
 		this.sudokuService = sudokuService;
 		this.generator = sudokuBoardGenerator;
+		this.importService = sudokuImportService;
+
 		CellModel[] cellsArr = new CellModel[GRID_NUM_CELLS];
 		for (int i = 0; i < GRID_NUM_CELLS; i++) {
 			cellsArr[i] = new CellModel(i);
@@ -283,4 +293,38 @@ public class SudokuViewModel {
         shouldExit.setData(true);
     }
 
+	public void onImport(File importFile) {
+		List<CellModel> importCells =
+			importService.importGame(importFile);
+		onImport(importCells, "file");
+	}
+
+	public void onImport(ApplicationArguments args) {
+		List<CellModel> importCells =
+			importService.importGame(args);
+		onImport(importCells, "args");
+	}
+
+	private void onImport(List<CellModel> importCells, String type) {
+		if (importCells == null || importCells.isEmpty()) {
+			JOptionPane.showMessageDialog(
+				null,
+				"Import failed. Please check " + type + " format.",
+				"Import Error",
+				JOptionPane.ERROR_MESSAGE
+			);
+			return ;
+		}
+
+		CellModel[] newCells = cells.getData();
+		for (int cellId = 0; cellId < GRID_NUM_CELLS; cellId++) {
+			newCells[cellId] = new CellModel(cellId);
+			refreshCells.add(cellId);
+		}
+		for (CellModel cell : importCells) {
+			newCells[cell.getId()] = cell;
+		}
+	    cells.setData(newCells, false);
+		this.spawnBoardStateWorker();
+	}
 }

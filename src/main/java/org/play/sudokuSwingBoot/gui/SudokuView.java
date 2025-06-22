@@ -49,7 +49,10 @@ public class SudokuView extends JFrame {
 				);
 				sudokuGrid.onCellChanged(cellModel);
 		});
-		this.viewModel.initBoard();
+		if (args.getSourceArgs().length != 0)
+			viewModel.onImport(args);
+		else
+			this.viewModel.initBoard();
 		this.viewModel.observeIsComplete(sudokuGrid::onComplete);
 		this.viewModel.observeShouldExit(this::onExit);
 

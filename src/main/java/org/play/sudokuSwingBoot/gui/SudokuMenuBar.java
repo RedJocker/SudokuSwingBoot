@@ -71,6 +71,7 @@ public class SudokuMenuBar extends JMenuBar{
 		loadMenuItem.addActionListener(this::onLoad);
 		menu.add(loadMenuItem);
 
+
 		final JMenuItem saveMenuItem =
 			new JMenuItem("Save game", KeyEvent.VK_S);
 		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(
@@ -79,6 +80,15 @@ public class SudokuMenuBar extends JMenuBar{
 			.setAccessibleDescription("Save a sudoku game");
 		saveMenuItem.addActionListener(this::onSave);
 		menu.add(saveMenuItem);
+
+		final JMenuItem importMenuItem =
+			new JMenuItem("Import game", KeyEvent.VK_I);
+		importMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_I, ActionEvent.ALT_MASK));
+		importMenuItem.getAccessibleContext()
+			.setAccessibleDescription("Import game from text file");
+		importMenuItem.addActionListener(this::onImport);
+		menu.add(importMenuItem);
 
 		final JMenuItem exitMenuItem =
 			new JMenuItem("Quit", KeyEvent.VK_Q);
@@ -130,5 +140,18 @@ public class SudokuMenuBar extends JMenuBar{
 				"New game",
 				JOptionPane.YES_NO_OPTION);
 		sudokuViewModel.onExit();
+	}
+
+	private void onImport(ActionEvent e) {
+		System.out.println("Import Clicked");
+
+		final JFileChooser importFileChooser = new JFileChooser();
+		importFileChooser.setCurrentDirectory(new File("./"));
+
+		int returnVal = importFileChooser.showOpenDialog(this.getParent());
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File importFile = importFileChooser.getSelectedFile();
+			this.sudokuViewModel.onImport(importFile);
+		}
 	}
 }
