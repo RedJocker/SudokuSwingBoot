@@ -1,9 +1,9 @@
 * SUDOKU SWING BOOT
 
 ** Index
-- [[*References][References]]
-- [[*Scope][Scope]]
-- [[*Running][Running]]
+- [[#References][References]]
+- [[#Scope][Scope]]
+- [[#Running][Running]]
 
 
 ** References
