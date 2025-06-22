@@ -13,18 +13,18 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import org.play.sudokuSwingBoot.gui.model.CellModel;
-import org.play.sudokuSwingBoot.service.FileService;
+import org.play.sudokuSwingBoot.service.SudokuFileService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
 public class SudokuMenuBar extends JMenuBar{
-	final FileService fileService;
+	final SudokuFileService fileService;
 	final SudokuViewModel sudokuViewModel;
 	
 	public SudokuMenuBar(
-		final FileService fileService,
+		final SudokuFileService fileService,
 		final SudokuViewModel sudokuViewModel) {
 
 		this.fileService = fileService;
@@ -78,9 +78,8 @@ public class SudokuMenuBar extends JMenuBar{
 				this.fileService.saveGame(
 					file, sudokuViewModel.getBoard()
 				);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}	
 		}
 	}
@@ -97,9 +96,8 @@ public class SudokuMenuBar extends JMenuBar{
 					file
 				);
 				sudokuViewModel.loadBoard(board);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}	
 		}
 	}

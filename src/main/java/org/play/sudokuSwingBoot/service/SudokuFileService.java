@@ -16,10 +16,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
-public class FileService {
+public class SudokuFileService {
 
 
-	public void saveGame(File saveFile, List<CellModel> boardModel) throws IOException {
+	public void saveGame(File saveFile, List<CellModel> boardModel)
+		throws IOException {
+
 		if (!saveFile.exists()) {
 			saveFile.createNewFile();
 		}
@@ -34,7 +36,8 @@ public class FileService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<CellModel> loadGame(File loadFile) throws IOException {
+	public List<CellModel> loadGame(File loadFile)
+		throws IOException {
 
 		final FileInputStream fin = new FileInputStream(loadFile);
 		final ObjectInputStream in = new ObjectInputStream(
