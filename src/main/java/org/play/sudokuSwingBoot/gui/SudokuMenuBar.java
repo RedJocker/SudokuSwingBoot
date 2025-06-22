@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.play.sudokuSwingBoot.gui.model.CellModel;
@@ -48,7 +49,16 @@ public class SudokuMenuBar extends JMenuBar{
 		newGameMenuItem.getAccessibleContext()
 			.setAccessibleDescription("New sudoku game");
 		newGameMenuItem.addActionListener(
-			(e) -> sudokuViewModel.onNewGame()
+			(e) -> {
+				int result = JOptionPane
+					.showConfirmDialog(this.getParent(),
+						"Do you really want to start a new game?",
+						"New game",
+						JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.OK_OPTION) {
+					sudokuViewModel.onNewGame();
+				}
+            }
 		);
 		menu.add(newGameMenuItem);
 
