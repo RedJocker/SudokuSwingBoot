@@ -79,6 +79,15 @@ public class SudokuMenuBar extends JMenuBar{
 			.setAccessibleDescription("Save a sudoku game");
 		saveMenuItem.addActionListener(this::onSave);
 		menu.add(saveMenuItem);
+
+		final JMenuItem exitMenuItem =
+			new JMenuItem("Quit", KeyEvent.VK_Q);
+		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+				KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+		exitMenuItem.getAccessibleContext()
+			.setAccessibleDescription("Quit Sudoku");
+		exitMenuItem.addActionListener(this::onExit);
+		menu.add(exitMenuItem);
 	}
 
 	private void onSave(ActionEvent e) {
@@ -111,5 +120,15 @@ public class SudokuMenuBar extends JMenuBar{
 				ex.printStackTrace();
 			}	
 		}
+	}
+
+	private void onExit(ActionEvent e) {
+		System.out.println("Exit Clicked");
+		int result = JOptionPane
+			.showConfirmDialog(this.getParent(),
+				"Do you really want to start a new game?",
+				"New game",
+				JOptionPane.YES_NO_OPTION);
+		sudokuViewModel.onExit();
 	}
 }

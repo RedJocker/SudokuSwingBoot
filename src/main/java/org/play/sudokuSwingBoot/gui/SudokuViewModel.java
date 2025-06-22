@@ -26,6 +26,7 @@ public class SudokuViewModel {
 	private final SudokuService sudokuService;
 	private LiveData<CellModel[]> cells;
 	private LiveData<Boolean> isComplete;
+	private LiveData<Boolean> shouldExit;
 	private SudokuWorker<SudokuBoardState> clickWorker = null;
 	private int currentActiveCellId = -1;
 	private HashSet<Integer> refreshCells;
@@ -42,6 +43,7 @@ public class SudokuViewModel {
 		}
 		cells = new LiveData<CellModel[]>(cellsArr);
 		isComplete = new LiveData<Boolean>(false);
+		shouldExit = new LiveData<Boolean>(false);
 		refreshCells = new HashSet<>();
 	}
 
@@ -160,6 +162,10 @@ public class SudokuViewModel {
 		isComplete.observe(onComplete);
 	}
 
+	public void observeShouldExit(Consumer<Boolean> onExit){
+		shouldExit.observe(onExit);
+	}
+
 	public void onCellClick(int cellId) {
 		System.out.println("Cell clicked " + cellId);
 		if (isComplete.getData()) {
@@ -271,6 +277,10 @@ public class SudokuViewModel {
 		}
 
 		cells.setData(board.toArray(CellModel[]::new), true);
+    }
+
+    public void onExit() {
+        shouldExit.setData(true);
     }
 
 }
