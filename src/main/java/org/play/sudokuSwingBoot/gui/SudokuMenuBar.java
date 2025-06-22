@@ -70,6 +70,7 @@ public class SudokuMenuBar extends JMenuBar{
 	private void onSave(ActionEvent e) {
 		System.out.println("Save Clicked");
 		final JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("./"));
 		int returnVal = fc.showSaveDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
@@ -87,6 +88,7 @@ public class SudokuMenuBar extends JMenuBar{
 	private void onLoad(ActionEvent e) {
 		System.out.println("Load Clicked");
 		final JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("./"));
 		int returnVal = fc.showOpenDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
