@@ -1,5 +1,11 @@
 * SUDOKU SWING BOOT
 
+** Index
+- [[*References][References]]
+- [[*Scope][Scope]]
+- [[*Running][Running]]
+
+
 ** References
 - [[https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html]]
 - [[https://docs.oracle.com/en/java/javase/23/docs/api/java.desktop/javax/swing/package-summary.html]]
