@@ -3,8 +3,8 @@
 ** Index
 - [[#References][References]]
 - [[#Scope][Scope]]
+- [[#Features][Features]]
 - [[#Running][Running]]
-
 
 ** References
 - [[https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html]]
@@ -17,6 +17,73 @@ An application for practice purposes combining java swing and spring boot.
 
 The theme of the application is a SUDOKU game
 
+** Features
+
+- Generates new games, when starting the program without arguments,
+  when choosing 'new game' from File menu, or when typing
+  the keybinding <modifier> + N. The modifier is system dependend
+  you can see a hint on the same
+  File menu where you can click 'New game'.
+  On linux is 'alt + N'.
+  If a game is already on course a confirmation dialog is presented.
+  Game board generation is done with QQWing library
+  linked on references above
+- Saves a current game, keeping track of all board state including
+  current selected square. To save a game you can click on 'Save game'
+  on File menu, or type <modifier> + S.
+  The filechooser will start on project root folder and display only
+  files with extension .sudoku.
+  If an existing file is selected it is overwritten without asking
+  for confirmation.
+  If the file does not exist it creates the file.
+  If the file does not have extension .sudoku the extension is
+  appended so that all saved files will have extension .sudoku.
+- Loads a saved game. To load a game you can click on 'Load game'
+  on File menu, or type <modifier> + L.
+  The filechooser will start on project root folder and display only
+  files with extension .sudoku. It is possible to change file filter
+  to display all files, but it is not recomended since by default all
+  saved files have .sudoku extension. 
+- Import a game from a text file. To load a game you
+  can click on 'Import game' on File menu, or type <modifier> + I.
+  The file format is expected to
+  have information for each cell on a separate line following the
+  format 'row,col;value,isEnabled'. The project contains
+  as example at least two import files named =complete.txt=,
+  with an already complete board and =partial.txt= which is the same
+  as previous file with some lines deleted so that it is not complete.  
+  The file chooser will not filter files by extension.
+  Import files are not guaranteed to be solvable or to be on a
+  state without invalid cells.
+  Those are requirements for the file writter to guarantee.
+  If the board has invalid cells those will be marked with red.  
+- Moving current active cell using arrow keys on keybord and choosing
+  current active cell by clicking a cell
+  that is not the current active cell.
+  Moving beyound borders wraps around to other side of same direction
+  left-right, top-bottom, keeping current line or column.
+  Clicking on the current active cell removes selection so that none
+  is selected.
+- Input values through keybord by typing one of [1-9] keys, or
+  by clicking one of the buttons with number label.
+  The value is input on the cell that is currently active, but
+  only if the cell is enabled.
+  On a newly generated board disabled cells
+  are all the initial ones.
+- Removing a value that was input by typing either 0 or X, or by
+  clicking the button with label x.
+  The value is removed from the cell that is currently active, but
+  only if the cell is enabled.
+- Checking board state and display information on invalid cells or
+  complete board.
+  If there are invalid cells those will be displayed by red color.
+  Only cells that are enabled can be cleared, following
+  the clear rules stated above.
+  If the board is complete with a valid board then all cells will be
+  displayed with the color green and futher board input will be ignored.
+  To continue you have to either start a new game or load/import a file.
+  
+  
 ** Running
 First you need to clone the repository on your computer.
 
@@ -35,11 +102,27 @@ and then you can call the script to run the program
 #+end_src
 
 you can also pass arguments to the script to pass it down
-to the application
+to the application. If the application receives arguments
+it will try to use that to import a board.
+the format expected is the same format expected when importing
+a text file, which is 'row,col;value,isEnabled' 
 
 #+begin_src  bash
-./run.sh first_argument second_argument
+./run.sh '0,0;2,false' '4,5;3,false'
 #+end_src
+
+This will create a board with just two values, a number 2 on top left
+and a number 3 on 5th line and 6th column. Both will be disabled for
+modification.
+
+It is also accepted to pass just one argument with spaces separating
+each import cell data.
+
+#+begin_src  bash
+./run.sh '0,0;2,false 2,5;3,false'
+#+end_src
+
+This will create same board as previous.
 
 *** Windows (untested)
 I don't have access to a windows enviroment to test this,
@@ -58,3 +141,14 @@ It should also work with arguments
 #+begin_src  bash
 ./run.sh first_argument second_argument
 #+end_src
+
+*** Gradle
+
+The project is a gradle project and you can run it using gradle
+command-line directly instead of using run script, or by using
+an IDE that gives you a way to run gradle projects in some other
+way like clicking arrow buttons.
+This project was written on emacs so I don't guarantee those to
+be working although it should work fine as long as you select a
+compatible java version, stated on =build.gradle.kts=, to run
+gradle.
