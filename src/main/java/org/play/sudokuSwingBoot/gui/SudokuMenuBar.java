@@ -136,8 +136,8 @@ public class SudokuMenuBar extends JMenuBar{
 		System.out.println("Exit Clicked");
 		int result = JOptionPane
 			.showConfirmDialog(this.getParent(),
-				"Do you really want to start a new game?",
-				"New game",
+				"Do you really want to exit the game?",
+				"Exit game",
 				JOptionPane.YES_NO_OPTION);
 		if (result == JFileChooser.APPROVE_OPTION)
 			sudokuViewModel.onExit();
