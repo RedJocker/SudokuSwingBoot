@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import org.play.sudokuSwingBoot.gui.utils.LookAndFeelMenu;
 import org.play.sudokuSwingBoot.model.CellModel;
 import org.play.sudokuSwingBoot.service.SudokuFileService;
 import org.springframework.context.annotation.Scope;
@@ -28,7 +29,8 @@ public class SudokuMenuBar extends JMenuBar{
 	public SudokuMenuBar(
 		final SudokuFileService fileService,
 		final SudokuViewModel sudokuViewModel,
-		final JFileChooser fileChooser
+		final JFileChooser fileChooser,
+		final LookAndFeelMenu lookAndFeelMenu
 	) {
 
 		this.fileService = fileService;
@@ -98,6 +100,8 @@ public class SudokuMenuBar extends JMenuBar{
 			.setAccessibleDescription("Quit Sudoku");
 		exitMenuItem.addActionListener(this::onExit);
 		menu.add(exitMenuItem);
+
+		menu.add(lookAndFeelMenu);
 	}
 
 	private void onSave(ActionEvent e) {
