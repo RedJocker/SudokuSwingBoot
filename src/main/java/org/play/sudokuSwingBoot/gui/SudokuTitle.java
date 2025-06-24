@@ -21,10 +21,10 @@ public class SudokuTitle extends JLabel {
 		BorderFactory.createLineBorder(Color.BLACK);
 
 	public SudokuTitle() {
-        this.setBorder(BORDER_BLACK);
-        this.setPreferredSize(PREFERED_DIMENSION);
-        this.setText(TITLE_TEXT);
-        this.setHorizontalAlignment(JLabel.CENTER);
-        this.setVerticalAlignment(JLabel.CENTER);
+		this.setBorder(BORDER_BLACK);
+		this.setPreferredSize(PREFERED_DIMENSION);
+		this.setText(TITLE_TEXT);
+		this.setHorizontalAlignment(JLabel.CENTER);
+		this.setVerticalAlignment(JLabel.CENTER);
 	}
 }

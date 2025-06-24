@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("singleton")
 public class SudokuGrid extends JPanel {
-	
+
 	private SudokuSquare[] squares;
-	
+
 	public SudokuGrid(
 		SudokuSquare square0,
 		SudokuSquare square1,
@@ -33,7 +33,7 @@ public class SudokuGrid extends JPanel {
 		GridLayout layout =
 			new GridLayout(SQUARE_SIDE_SIZE, SQUARE_SIDE_SIZE);
 		this.setLayout(layout);
-		
+
 		this.squares = new SudokuSquare[]{
 			square0,
 			square1,
@@ -45,7 +45,7 @@ public class SudokuGrid extends JPanel {
 			square7,
 			square8
 		};
-		
+
 		for (int i = 0; i < GRID_NUM_SQUARES; i++) {
 			SudokuSquare square = this.squares[i];
 			square.setSquareId(i);
@@ -60,7 +60,7 @@ public class SudokuGrid extends JPanel {
 	}
 
 	public void onCellChanged(CellModel cellModel) {
-		final int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
+		final int cellRow = cellModel.getId() / GRID_SIDE_SIZE;
 		final int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
 
 		final int squareRow = cellRow / SQUARE_SIDE_SIZE;

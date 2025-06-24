@@ -28,10 +28,10 @@ public class SudokuSquare extends JPanel {
 
 	private int id;
 	private SudokuCell[] cells;
-	
+
 	public SudokuSquare() {
-        this.setBorder(BORDER_BLACK);
-        this.setPreferredSize(PREFERED_DIMENSION);
+		this.setBorder(BORDER_BLACK);
+		this.setPreferredSize(PREFERED_DIMENSION);
 		GridLayout layout =
 			new GridLayout(SQUARE_SIDE_SIZE, SQUARE_SIDE_SIZE);
 		this.setLayout(layout);
@@ -43,17 +43,17 @@ public class SudokuSquare extends JPanel {
 			this.add(cell);
 		}
 	}
-	
+
 	//    s0         s1         s2
-	// 0  1  2  | 3  4  5  | 6  7  8 
+	// 0  1  2  | 3  4  5  | 6  7  8
 	// 9  10 11 | 12 13 14 | 15 16 17
 	// 18 19 20 | 21 22 23 | 24 25 26
 	//    s3    |    s4    |    s5
 	// 27 28 ...
-	public void setSquareId(int id) { 
-		this.id = id;                 
-		final int squareRow = id / SQUARE_SIDE_SIZE; 
-		final int squareCol = id % SQUARE_SIDE_SIZE; 
+	public void setSquareId(int id) {
+		this.id = id;
+		final int squareRow = id / SQUARE_SIDE_SIZE;
+		final int squareCol = id % SQUARE_SIDE_SIZE;
 
 		for (int cellRow = 0; cellRow < SQUARE_SIDE_SIZE; cellRow++) {
 			for (int cellCol = 0; cellCol < SQUARE_SIDE_SIZE; cellCol++) {
@@ -61,7 +61,7 @@ public class SudokuSquare extends JPanel {
 				int cellId =
 					(GRID_SIDE_SIZE
 						* ((squareRow * SQUARE_SIDE_SIZE) + cellRow))
-					+ ((squareCol * SQUARE_SIDE_SIZE) + cellCol);  
+					+ ((squareCol * SQUARE_SIDE_SIZE) + cellCol);
 				this.cells[cellArrIndex].setId(cellId);
 			}
 		}
@@ -73,8 +73,8 @@ public class SudokuSquare extends JPanel {
 		}
 	}
 
-    public void onCellChanged(CellModel cellModel) {
-        int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
+	public void onCellChanged(CellModel cellModel) {
+		int cellRow =  cellModel.getId() / GRID_SIDE_SIZE;
 		int cellCol = cellModel.getId() % GRID_SIDE_SIZE;
 
 		int squareRow = cellRow / SQUARE_SIDE_SIZE;
@@ -86,13 +86,13 @@ public class SudokuSquare extends JPanel {
 		int squareCellIndex = (squareCellRow * SQUARE_SIDE_SIZE)
 			+ squareCellCol;
 		cells[squareCellIndex].onCellChanged(cellModel);
-    }
+	}
 
-    public void onComplete(Boolean isComplete) {
+	public void onComplete(Boolean isComplete) {
 		if (!isComplete)
 			return ;
-        for(SudokuCell cell: cells) {
+		for(SudokuCell cell: cells) {
 			cell.onComplete(isComplete);
 		}
-    }
+	}
 }

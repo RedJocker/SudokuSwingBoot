@@ -25,7 +25,7 @@ public class SudokuMenuBar extends JMenuBar{
 	final SudokuFileService fileService;
 	final SudokuViewModel sudokuViewModel;
 	final JFileChooser fileChooser;
-	
+
 	public SudokuMenuBar(
 		final SudokuFileService fileService,
 		final SudokuViewModel sudokuViewModel,
@@ -36,7 +36,7 @@ public class SudokuMenuBar extends JMenuBar{
 		this.fileService = fileService;
 		this.sudokuViewModel = sudokuViewModel;
 		this.fileChooser = fileChooser;
-		
+
 		final JMenu menu = new JMenu("File");
 		menu.setMnemonic(KeyEvent.VK_F);
 		menu.getAccessibleContext()
@@ -60,7 +60,7 @@ public class SudokuMenuBar extends JMenuBar{
 				if (result == JOptionPane.OK_OPTION) {
 					sudokuViewModel.onNewGame();
 				}
-            }
+			}
 		);
 		menu.add(newGameMenuItem);
 
@@ -115,7 +115,7 @@ public class SudokuMenuBar extends JMenuBar{
 				);
 			} catch (IOException ex) {
 				ex.printStackTrace();
-			}	
+			}
 		}
 	}
 
@@ -132,7 +132,7 @@ public class SudokuMenuBar extends JMenuBar{
 				sudokuViewModel.loadBoard(board);
 			} catch (IOException ex) {
 				ex.printStackTrace();
-			}	
+			}
 		}
 	}
 

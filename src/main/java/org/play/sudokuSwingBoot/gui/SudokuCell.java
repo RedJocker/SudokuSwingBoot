@@ -13,7 +13,7 @@ import org.play.sudokuSwingBoot.model.CellModel;
 
 public class SudokuCell extends JLabel implements MouseListener {
 
-	private static Border BORDER_GRAY = 
+	private static Border BORDER_GRAY =
 		BorderFactory.createLineBorder(Color.GRAY);
 	private static Border BORDER_GRAY_THICK =
 		BorderFactory.createLineBorder(Color.GRAY, 3);
@@ -22,7 +22,7 @@ public class SudokuCell extends JLabel implements MouseListener {
 
 	private int id = -1;
 	private Consumer<Integer> onClickCell = null;
-	
+
 	public SudokuCell() {
 		this.setHorizontalAlignment(JLabel.CENTER);
 		this.setVerticalAlignment(JLabel.CENTER);
@@ -41,7 +41,7 @@ public class SudokuCell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (onClickCell != null && this.id >= 0 && this.id < 9 * 9) 
+		if (onClickCell != null && this.id >= 0 && this.id < 9 * 9)
 			onClickCell.accept(this.id);
 	}
 
@@ -65,7 +65,7 @@ public class SudokuCell extends JLabel implements MouseListener {
 		// ignore
 	}
 
-    public void onCellChanged(CellModel cellModel) {
+	public void onCellChanged(CellModel cellModel) {
 		System.out.println("SudokuCell.onCellChanged\n\t"
 			+ cellModel.toString());
 
@@ -92,13 +92,13 @@ public class SudokuCell extends JLabel implements MouseListener {
 		}
 
 		this.setText(cellModel.getText());
-    }
+	}
 
-    public void onComplete(Boolean isComplete) {
+	public void onComplete(Boolean isComplete) {
 		if (!isComplete)
 			return ;
 
 		this.setBackground(Color.GREEN);
 		this.setOpaque(true);
-    }
+	}
 }

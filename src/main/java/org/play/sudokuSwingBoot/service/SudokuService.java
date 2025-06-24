@@ -24,7 +24,7 @@ public class SudokuService {
 		boolean[] isComplete,
 		int[] numbers
 	) {
-		
+
 		int cellId = Sudoku.cellId(row, col);
 		CellModel cell = cells[cellId];
 		if (cell.getValue() == 0) {
@@ -37,7 +37,7 @@ public class SudokuService {
 			invalidCells.add(numbers[cell.getValue()] - 1);
 		}
 	}
-	
+
 	private void checkRow(
 		int row,
 		CellModel[] cells,
@@ -45,13 +45,13 @@ public class SudokuService {
 		boolean[] isComplete
 	) {
 		int[] numbers = new int[10];
-		
+
 		for (int col = 0; col < GRID_SIDE_SIZE; col++) {
 			checkCell(row, col,
 				cells, invalidCells, isComplete, numbers);
 		}
 	}
-	
+
 	private void checkSameRow(
 		CellModel[] cells,
 		HashSet<Integer> invalidCells,
@@ -85,7 +85,7 @@ public class SudokuService {
 			checkCol(col, cells, invalidCells, isComplete);
 		}
 	}
-	
+
 	private void checkSquare(
 		int row,
 		int col,
@@ -110,7 +110,7 @@ public class SudokuService {
 	private void checkSameSquare(
 		CellModel[] cells,
 		HashSet<Integer> invalidCells,
-		boolean[] isComplete 
+		boolean[] isComplete
 	) {
 		for (int row = 0;
 			 row < GRID_SIDE_SIZE;
@@ -124,7 +124,7 @@ public class SudokuService {
 			}
 		}
 	}
-	
+
 	public SudokuBoardState boardState(CellModel[] cells) {
 		HashSet<Integer> invalidCells = new HashSet<>();
 		boolean[] isComplete = { true };

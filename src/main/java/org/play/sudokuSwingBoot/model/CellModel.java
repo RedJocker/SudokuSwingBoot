@@ -63,7 +63,7 @@ public class CellModel implements Serializable {
 	public String toString() {
 		return "CellModel("
 			+ "id: " + id
-            + ", isActive: " + isActive
+			+ ", isActive: " + isActive
 			+ ", isEnabled: " + isEnabled
 			+ ", isValid: " + isValid
 			+ ", value: " + value

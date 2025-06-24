@@ -116,9 +116,9 @@ public class SudokuViewModel {
 	}
 
 	/**
-	 *  Spawns a SwingWorker that computes board state,
-	 *  getting completion status and invalid squares,
-	 *  updates cellModels with new status and trigger cells observers
+	 *	Spawns a SwingWorker that computes board state,
+	 *	getting completion status and invalid squares,
+	 *	updates cellModels with new status and trigger cells observers
 	 */
 	private void spawnBoardStateWorker() {
 		// reset invalid state,
@@ -127,7 +127,7 @@ public class SudokuViewModel {
 			if(!c.isValid()) {
 				c.setValid(true);
 				refreshCells.add(c.getId());
-		    }
+			}
 		}
 
 		if (clickWorker != null
@@ -208,7 +208,7 @@ public class SudokuViewModel {
 		this.spawnBoardStateWorker();
 	}
 
-    public void onSudokuKey(String keyEvent) {
+	public void onSudokuKey(String keyEvent) {
 		System.out.println("keyEvent: " + keyEvent);
 		if (isComplete.getData()) {
 			System.out.println("Game is already complete");
@@ -216,33 +216,33 @@ public class SudokuViewModel {
 		}
 
 		switch(keyEvent) {
-		    case "active-right" -> {
-		    	onSudokuKeyMoveActive(1);
-		    }
-		    case "active-left" -> {
-		    	onSudokuKeyMoveActive(-1);
-		    }
-		    case "active-up" -> {
-		    	onSudokuKeyMoveActive(GRID_SIDE_SIZE);
-		    }
-		    case "active-down" -> {
-		    	onSudokuKeyMoveActive(-GRID_SIDE_SIZE);
-		    }
-		    case "clear" -> {
-		    	this.currentCellUpdateValue(0);
-		    	this.spawnBoardStateWorker();
-		    }
-		    default -> {
+			case "active-right" -> {
+				onSudokuKeyMoveActive(1);
+			}
+			case "active-left" -> {
+				onSudokuKeyMoveActive(-1);
+			}
+			case "active-up" -> {
+				onSudokuKeyMoveActive(GRID_SIDE_SIZE);
+			}
+			case "active-down" -> {
+				onSudokuKeyMoveActive(-GRID_SIDE_SIZE);
+			}
+			case "clear" -> {
+				this.currentCellUpdateValue(0);
+				this.spawnBoardStateWorker();
+			}
+			default -> {
 				if (!isValidCellId(currentActiveCellId)) {
 					System.out.println("No Cell Selected");
 				} else if (keyEvent.startsWith("put-")) {
-		    		int value = keyEvent.charAt(4) - '0';
-		    		this.currentCellUpdateValue(value);
-		    		this.spawnBoardStateWorker();
-		    	}
-		    }
+					int value = keyEvent.charAt(4) - '0';
+					this.currentCellUpdateValue(value);
+					this.spawnBoardStateWorker();
+				}
+			}
 		}
-    }
+	}
 
 	private void onSudokuKeyMoveActive(int offset) {
 		int newCellId;
@@ -266,24 +266,24 @@ public class SudokuViewModel {
 		this.refreshCells.clear();
 	}
 
-    public void onNewGame() {
+	public void onNewGame() {
 		System.out.println("New Game");
 		if (this.isComplete.getData())
 			this.isComplete.setData(false);
 		this.initBoard();
-    }
+	}
 
 	public List<CellModel> getBoard() {
 		return Arrays.stream(this.cells.getData())
 			.toList();
 	}
 
-    public void loadBoard(List<CellModel> board) {
+	public void loadBoard(List<CellModel> board) {
 		if (board == null)
 			return;
 		if (this.isComplete.getData())
 			this.isComplete.setData(false);
-		
+
 		for (CellModel cell : board) {
 			refreshCells.add(cell.getId());
 			if (cell.isActive())
@@ -291,11 +291,11 @@ public class SudokuViewModel {
 		}
 
 		cells.setData(board.toArray(CellModel[]::new), true);
-    }
+	}
 
-    public void onExit() {
-        shouldExit.setData(true);
-    }
+	public void onExit() {
+		shouldExit.setData(true);
+	}
 
 	public void onImport(File importFile) {
 		List<CellModel> importCells =
@@ -330,7 +330,7 @@ public class SudokuViewModel {
 		for (CellModel cell : importCells) {
 			newCells[cell.getId()] = cell;
 		}
-	    cells.setData(newCells, false);
+		cells.setData(newCells, false);
 		this.spawnBoardStateWorker();
 	}
 }
