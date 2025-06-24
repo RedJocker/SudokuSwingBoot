@@ -22,18 +22,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("singleton")
 public class SudokuMenuBar extends JMenuBar{
-	final SudokuFileService fileService;
 	final SudokuViewModel sudokuViewModel;
 	final JFileChooser fileChooser;
 
 	public SudokuMenuBar(
-		final SudokuFileService fileService,
 		final SudokuViewModel sudokuViewModel,
 		final JFileChooser fileChooser,
 		final LookAndFeelMenu lookAndFeelMenu
 	) {
 
-		this.fileService = fileService;
 		this.sudokuViewModel = sudokuViewModel;
 		this.fileChooser = fileChooser;
 
@@ -109,13 +106,7 @@ public class SudokuMenuBar extends JMenuBar{
 		int returnVal = fileChooser.showSaveDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			try {
-				this.fileService.saveGame(
-					file, sudokuViewModel.getBoard()
-				);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			sudokuViewModel.onSave(file);
 		}
 	}
 
@@ -125,14 +116,8 @@ public class SudokuMenuBar extends JMenuBar{
 		int returnVal = fileChooser.showOpenDialog(this.getParent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			try {
-				List<CellModel> board = this.fileService.loadGame(
-					file
-				);
-				sudokuViewModel.loadBoard(board);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			sudokuViewModel.onLoadBoard(file);
+			
 		}
 	}
 

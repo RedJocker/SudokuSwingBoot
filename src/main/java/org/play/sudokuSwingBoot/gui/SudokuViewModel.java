@@ -4,6 +4,7 @@ import static org.play.sudokuSwingBoot.Sudoku.GRID_NUM_CELLS;
 import static org.play.sudokuSwingBoot.Sudoku.GRID_SIDE_SIZE;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.play.sudokuSwingBoot.model.CellModel;
 import org.play.sudokuSwingBoot.model.SudokuBoardState;
 import org.play.sudokuSwingBoot.model.SudokuRawBoard;
 import org.play.sudokuSwingBoot.service.SudokuBoardGenerator;
+import org.play.sudokuSwingBoot.service.SudokuFileService;
 import org.play.sudokuSwingBoot.service.SudokuImportService;
 import org.play.sudokuSwingBoot.service.SudokuService;
 import org.springframework.boot.ApplicationArguments;
@@ -30,6 +32,7 @@ public class SudokuViewModel {
 	private final SudokuBoardGenerator generator;
 	private final SudokuService sudokuService;
 	private final SudokuImportService importService;
+	private final SudokuFileService fileService;
 
 	private LiveData<CellModel[]> cells;
 	private LiveData<Boolean> isComplete;
@@ -41,11 +44,13 @@ public class SudokuViewModel {
 	public SudokuViewModel(
 		SudokuService sudokuService,
 		SudokuBoardGenerator sudokuBoardGenerator,
-		SudokuImportService sudokuImportService
+		SudokuImportService sudokuImportService,
+		SudokuFileService fileService
 	) {
 		this.sudokuService = sudokuService;
 		this.generator = sudokuBoardGenerator;
 		this.importService = sudokuImportService;
+		this.fileService = fileService;
 
 		CellModel[] cellsArr = new CellModel[GRID_NUM_CELLS];
 		for (int i = 0; i < GRID_NUM_CELLS; i++) {
@@ -278,8 +283,14 @@ public class SudokuViewModel {
 			.toList();
 	}
 
-	public void loadBoard(List<CellModel> board) {
-		if (board == null)
+	public void onLoadBoard(File loadFile) {
+		List<CellModel> board = null;
+		try {
+			board = this.fileService.loadGame(loadFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		if (board == null || board.size() != GRID_NUM_CELLS)
 			return;
 		if (this.isComplete.getData())
 			this.isComplete.setData(false);
@@ -295,6 +306,16 @@ public class SudokuViewModel {
 
 	public void onExit() {
 		shouldExit.setData(true);
+	}
+
+	public void onSave(File saveToFile) {
+		try {
+			this.fileService.saveGame(
+				saveToFile, this.getBoard()
+			);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public void onImport(File importFile) {
